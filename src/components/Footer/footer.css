@@ -1,0 +1,20 @@
+.app-Footer{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 3px 6px #000;
+    padding: 20px 0px;
+}
+.note_text{
+    font-size: 16px;
+    font-weight: 400;
+    color: #949494;
+    margin: 0px;
+}

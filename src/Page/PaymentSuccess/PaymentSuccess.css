@@ -1,0 +1,81 @@
+.payment-container .header {
+    padding: 20px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.payment-container .logo {
+    height: 30px;
+}
+
+.payment-container .content {
+    flex: 1;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.payment-container .checkmark-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.payment-container .checkmark {
+    font-size: 50px;
+    color: white;
+}
+
+.payment-container .status {
+    font-size: 20px;
+    color: #0052cc;
+    font-weight: 600;
+}
+
+.payment-container .amount {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.payment-container .details {
+    margin-top: 40px;
+    font-size: 16px;
+    color: #555;
+}
+
+.payment-container .upi-link {
+    color: #0052cc;
+    text-decoration: none;
+}
+
+.payment-container .copy-icon {
+    margin-left: 5px;
+}
+
+.payment-container .support-text {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.payment-container .payment-footer-container{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.payment-container .redirect-message {
+    background-color: #004aad;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    /* position: fixed;
+    bottom: 0; */
+    width: 100%;
+}

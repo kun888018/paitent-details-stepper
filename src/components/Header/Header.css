@@ -1,0 +1,31 @@
+.app-header {
+    height: 70px;
+    background-color: white;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 30px;
+}
+
+.life-on {
+    font-size: 14px;
+    color: #00AEEF;
+    font-weight: 500;
+}
+
+.india-flag {
+    margin-left: 4px;
+    font-size: 14px;
+}

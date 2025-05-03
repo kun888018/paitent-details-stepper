@@ -1,0 +1,13 @@
+.backIconText{
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1E1E1E;
+    text-decoration: none;
+    margin: 20px 0px;
+}
+
+.backIconText img{
+    margin-right: 5px;
+}

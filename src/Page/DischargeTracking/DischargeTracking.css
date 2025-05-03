@@ -1,0 +1,248 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* Container */
+.discharge-container {
+    /* max-width: 1200px; */
+    /* margin: 20px auto; */
+    background: #ffffff;
+    /* border-radius: 10px; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    overflow: hidden;
+}
+
+/* Header Section */
+.header-section {
+    padding: 20px 0px;
+}
+
+.banner-section {
+    background: linear-gradient(to right, #034EA1, #01B4AC);
+    color: white;
+}
+
+.banner_bg_img {
+    padding: 40px 0px;
+    background-image: url('./../../../public/assets/banner_img.svg');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+    min-height: 200px;
+}
+
+.banner-section-conatiner {
+    display: flex;
+}
+
+.patient-details-heading {
+    min-width: 280px;
+    padding-left: 30px;
+}
+
+.patient-details-heading h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.patient-details-details {
+    display: flex;
+}
+
+.patient-details-container {
+    margin-right: 40px;
+    min-width: 308px;
+}
+
+.patient-details-container p {
+    margin: 8px 0;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.patient-details-container .patient-name {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.patient-details-container .patient-details-patient p{
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.patient-details-container .patient-details-patient p.patient-details-dob{
+    margin-top: 20px;
+}
+
+.patient-details-container .patient-details-doctor p{
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.patient-details-container .patient-details-doctor p img{
+    margin-right: 10px;
+}
+
+.patient-details-container .patient-details-doctor p.patient-details-ward{
+    margin-top: 20px;
+}
+
+.room-info {
+    text-align: center;
+}
+
+.room-info p {
+    margin: 11px 0px 0px 0px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.room-info .room-number-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #034EA1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+
+
+
+
+.timeline {
+    position: relative;
+    /* margin-left: 20px; */
+    padding-left: 40px;
+}
+
+.step {
+    position: relative;
+    padding-bottom: 30px;
+}
+
+.step:last-child::after{
+    display: none;
+}
+
+.step::before {
+    content: url('../../../public/assets/gray_circle_icon.svg');
+    position: absolute;
+    top: 6px;
+    left: -35px;
+    background-color: #ffffff;
+    z-index: 9;
+}
+
+.step.completed::before {
+    content: url('../../../public/assets/ok_with_circle_icon.svg');
+}
+
+.step.in-progress::before {
+    content: url('../../../public/assets/circle_icon.svg');
+}
+
+.step::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -21px;
+    height: 100%;
+    border-left: 2px dashed #ccc;
+}
+
+.step.completed::after{
+    border-left: 2px dashed #034EA1;
+}
+
+.step .title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #034EA1;
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 550px;
+}
+
+.step .title .toggle-icon{
+    padding-left: 30px;
+}
+
+.step.completed .title {
+    /* text-decoration: underline; */
+}
+
+.step.in-progress{
+    padding-top: 10px;
+}
+
+.step.in-progress .badge {
+    display: inline-block;
+    background: #E89048;
+    color: white;
+    font-size: 12px;
+    border-radius: 12px;
+    margin-bottom: 5px;
+    font-weight: 700;
+    padding: 5px 10px;
+}
+
+.step .time {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.step.pending .title,
+.step.pending .time {
+    color: #A7A7A7;
+}
+
+.collapse_arrow{
+    transform: rotate(-180deg);
+}
+
+.discharge_Tracking{
+    display: flex;
+    padding: 40px 0px;
+}
+
+.discharge_Tracking_heading{
+    min-width: 280px;
+    padding-left: 30px;
+}
+
+.discharge_Tracking_heading h2{
+    margin: 0px;
+}
+
+.additional-info{
+
+}
+
+.additional-info p{
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.additional-info a{
+    font-size: 14px;
+    font-weight: 400;
+    color: #01B4AC;
+}
