@@ -11,7 +11,7 @@ const OTPPage = () => {
   const [validateCaptcha, setValidateCaptcha] = useState(false);
 
 
-  const OTP_LENGTH = 4;
+  const OTP_LENGTH = 6;
   // const OTP_VALIDITY_PERIOD = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
   const OTP_VALIDITY_PERIOD = 30 * 1000;
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
@@ -76,7 +76,7 @@ const OTPPage = () => {
     }
 
     const enteredOtp = otp.join('');
-    if (enteredOtp === '1234') {
+    if (enteredOtp === '123456') {
       const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
       localStorage.setItem(
         'otpVerification',
@@ -96,9 +96,9 @@ const OTPPage = () => {
 
   return (
     <>
-      {!validateCaptcha ? 
+      {/* {!validateCaptcha ? 
       <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" onChange={handleVerify} />
-      :
+      : */}
       <>
         <Header/>
         <div className="otp_page_container">
@@ -108,8 +108,18 @@ const OTPPage = () => {
           <div className="right">
             <div className="otp-page">
               {error && <p className="error" aria-live="assertive">{error}</p>}
-              <h2>OTP Verification</h2>
-              <p>Please enter the verification code sent to your registered mobile number</p>
+              <div className='welcome_back_section'>
+                <p>Hi</p>
+                <h2>Welcome Back!</h2>
+                <img className='for_mobile' src="./assets/welcome_back_icon.svg" alt="OTP" />
+              </div>
+              <div className='for_mobile'>
+                <p>Enter Your 4 Digit MPIN</p>
+              </div>
+              <div className='for_desktop'>
+                <h2>OTP Verification</h2>
+                <p>Please enter the verification code sent to your registered mobile number</p>
+              </div>
               <div className="otp-container">
                 {otp.map((value, index) => (
                   <input
@@ -128,15 +138,20 @@ const OTPPage = () => {
               {/* <button onClick={handleSubmit} className="submit-btn">
                 Verify
               </button> */}
-              <Button handleSubmit={handleSubmit} btnVal={"Verify"} />
-              <div class="resend">
-                Didn’t Receive the OTP? <a href="#">Resend OTP</a>
+              <div className='submit_resend_cont'>
+                <Button handleSubmit={handleSubmit} btnVal={"Verify"} />
+                <div class="resend">
+                  Didn’t Receive the OTP? <a href="#">Resend OTP</a>
+                </div>
+                <div class="forgot">
+                  <a href="#">Forgot MPIN ?</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </>
-      }
+      {/* } */}
     </>
   );
 };

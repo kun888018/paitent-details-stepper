@@ -95,6 +95,9 @@ body {
 
 .room-info {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .room-info p {
@@ -245,4 +248,55 @@ body {
     font-size: 14px;
     font-weight: 400;
     color: #01B4AC;
+}
+
+@media(max-width: 767px){
+    .banner_bg_img{
+        padding: 10px 0px;
+    }
+    .banner-section-conatiner{
+        flex-direction: column;
+    }
+    .patient-details-container .patient-details-doctor p.patient-details-ward{
+        display: none;
+    }
+    .ward_payment_container{
+        display: flex;
+        justify-content: space-between;
+        background-color: #CDE5FF;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .ward_payment_container p{
+        font-size: 12px;
+        font-weight: 700;
+        color: #034EA1;
+        text-transform: capitalize;
+    }
+    .ward_payment_container p:last-child{
+        text-transform: uppercase;
+    }
+    .p20_lr_m{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .patient-details-details{
+        justify-content: space-between;
+    }
+    .patient-details-container{
+        min-width: initial
+    }
+    .discharge_Tracking{
+        padding-top: 20px;
+        padding-left: 20px;
+        flex-direction: column;
+    }
+    .discharge_Tracking_heading{
+        padding-left: 0px;
+        margin-bottom: 10px;
+    }
+    .timeline{
+        padding-left: 35px;
+    }
+
 }

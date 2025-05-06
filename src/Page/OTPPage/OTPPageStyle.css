@@ -73,7 +73,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .right .otp-page h2 {
@@ -116,10 +116,81 @@
   font-weight: 400;
 }
 
+.forgot{
+  margin-top: 10px;
+}
+
+.forgot a{
+  font-size: 12px;
+  font-weight: 700;
+  color: #034EA1;
+  text-decoration: none;
+}
+
+.welcome_back_section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome_back_section{
+  display: none;
+}
+
+.for_mobile{
+  display: none;
+}
+
 
 
 @media(max-width : 767px){
+  body{
+    background-color: #FFFFFF !important;
+  }
   .otp_page_container{
     flex-direction: column;
+  }
+  .left{
+    display: none;
+  }
+  .otp-page{
+    text-align: initial;
+  }
+  .right{
+    max-width: 400px;
+    margin: auto;
+  }
+  .right .otp-page .welcome_back_section h2{
+    text-align: center;
+    margin-top: 15px;
+  }
+  .right .otp-page p{
+    margin: initial;
+  }
+  .otp-container{
+    justify-content: initial;
+  }
+  .submit_resend_cont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .submit-btn{
+    width: 100%;
+  }
+  .otp-container{
+    gap: 10px;
+  }
+  .otp-input{
+    width: 12%;
+  }
+  .for_desktop{
+    display: none;
+  }
+  .welcome_back_section{
+    display: flex;
+  }
+  .for_mobile{
+    display: block;
   }
 }

@@ -48,10 +48,25 @@ const DischargeTracking = () => {
             <div className="banner-section">
                 <div className="banner_bg_img">
                     <div className="container banner-section-conatiner">
-                        <div className="patient-details-heading">
+                        <div className="for_mobile">
+                            <div className="back_btn_cont p20_lr_m">
+                                <img  className="pointer" src="assets/back_white_icon.svg" alt="" />
+                            </div>
+                            <div className="ward_payment_container p20_lr_m">
+                                <p>
+                                    <span>General</span> &nbsp;
+                                    <span>Ward</span>
+                                </p>
+                                <p>
+                                    <span>Insurance</span> &nbsp;
+                                    <span>Payment</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div className="patient-details-heading for_desktop ">
                             <h2>Patient Details</h2>
                         </div>
-                        <div className="patient-details-details">
+                        <div className="patient-details-details p20_lr_m">
                             <div className="patient-details-container">
                                 <p className="patient-name">Ms. Mohit Kumar Herimath</p>
                                 <div className="patient-details-patient">

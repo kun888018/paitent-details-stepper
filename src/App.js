@@ -15,7 +15,8 @@ const App = () => {
         {/* <Route path="/" element={<PaymentReceipt />} /> */}
         <Route path="/" element={<PaymentSuccess />} />
         {/* <Route path="/" element={<OTPPage />} /> */}
-        {/* <Route path="/" element={<OtpVerification />} /> */}
+        {/* <Route path="/" element={<StepperPage />} /> */}
+        {/* <Route path="/" element={<StepperPage />} /> */}
         
         <Route path="/stepper" element={<StepperPage />} />
         <Route path="/404" element={<NotFoundPage />} />
