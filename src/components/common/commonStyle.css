@@ -11,3 +11,9 @@
 .backIconText img{
     margin-right: 5px;
 }
+
+.submit-btn:disabled {
+    background-color: #ccc; /* Grey background when disabled */
+    cursor: not-allowed; /* Change cursor to 'not-allowed' */
+    opacity: 0.6; /* Optional: make the button semi-transparent */
+}

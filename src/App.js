@@ -6,23 +6,26 @@ import RazorpayButton from './components/RazorpayButton';
 import OtpVerification from './Page/OtpVerification/OtpVerification';
 import PaymentReceipt from './Page/PaymentReceipt/PaymentReceipt';
 import PaymentSuccess from './Page/PaymentSuccess/PaymentSuccess';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   return (
     // <RazorpayButton />
-    <Router>
-      <Routes>
-        {/* <Route path="/" element={<PaymentReceipt />} /> */}
-        <Route path="/" element={<PaymentSuccess />} />
-        {/* <Route path="/" element={<OTPPage />} /> */}
-        {/* <Route path="/" element={<StepperPage />} /> */}
-        {/* <Route path="/" element={<StepperPage />} /> */}
-        
-        <Route path="/stepper" element={<StepperPage />} />
-        <Route path="/404" element={<NotFoundPage />} />
-        <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          {/* <Route path="/" element={<PaymentReceipt />} /> */}
+          {/* <Route path="/" element={<PaymentSuccess />} /> */}
+          <Route path="/" element={<OTPPage />} />
+          {/* <Route path="/" element={<StepperPage />} /> */}
+          
+          <Route path="/stepper" element={<StepperPage />} />
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
+        </Routes>
+      </Router>
+      <ToastContainer />
+    </>
   );
 };
 

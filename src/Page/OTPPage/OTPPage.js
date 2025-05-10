@@ -1,53 +1,70 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import './OTPPageStyle.css';
 import Header from '../../components/Header/Header';
+import Button from '../../components/common/Button';
+import { SendOtp, VerifyOtp } from '../../service/api.service';
+import { decryptData, encryptData } from '../../Utils/cryptoUtils';
+import { showToast } from '../../components/common/Reacttoastify';
+import Loader from '../../components/common/Loader/Loader';
 // import { GoogleReCaptchaProvider, GoogleReCaptcha } from 'react-google-recaptcha-v3';
 import ReCAPTCHA from "react-google-recaptcha";
-import Button from '../../components/common/Button';
+import SECRET_KEY_CONFIG from '../../service/SecretKeyDeclaration';
+import { generateBrowserId, getStoredBrowserId } from '../../Utils/browserUtils';
+
 
 const OTPPage = () => {
-
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const uhid = queryParams.get('uhid');
+  const episodeNumber = queryParams.get('episode_number');
   const [validateCaptcha, setValidateCaptcha] = useState(false);
-
-
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const OTP_LENGTH = 6;
   // const OTP_VALIDITY_PERIOD = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
   const OTP_VALIDITY_PERIOD = 30 * 1000;
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
   const [error, setError] = useState('');
+  const [loading, setLoading] = React.useState(false);
   const inputRefs = useRef([]);
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const patientId = searchParams.get('patient_id');
-  const episodeNumber = searchParams.get('episode_number');
+  // useEffect(() => {
+  //   handleOtp();
+  // }, []);
 
   useEffect(() => {
-    // if (!patientId || !episodeNumber) {
-    //   navigate('/404');
-    //   return;
-    // }
-
+    if (!uhid || !episodeNumber) {
+      navigate('/404');
+      return;
+    }
     const storedVerificationData = JSON.parse(localStorage.getItem('otpVerification')) || {};
-    const { verifiedPatientId, verifiedEpisodeNumber, expirationTime } = storedVerificationData;
-
+    const storedBrowserId = storedVerificationData.browserId;
+    const currentBrowserId = getStoredBrowserId();
+    const { verifiedUhid, verifiedEpisodeNumber, expirationTime } = storedVerificationData;
     if (
-      verifiedPatientId === patientId &&
+      verifiedUhid === uhid &&
       verifiedEpisodeNumber === episodeNumber &&
       expirationTime &&
-      Date.now() < expirationTime
+      Date.now() < expirationTime &&
+      storedBrowserId === currentBrowserId
     ) {
-      navigate(`/stepper?patient_id=${patientId}&episode_number=${episodeNumber}`);
+      navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
+    } else {
+      // handleOtp();
+      localStorage.removeItem('otpVerification');
+      localStorage.removeItem('browserId');
+      handleOtp();
     }
-  }, [patientId, episodeNumber, navigate]);
+  }, [uhid, episodeNumber, navigate]);
 
   const handleVerify = (value) => {
     console.log("value===>", value);
-    if(value){
-      setTimeout(() => {
-        setValidateCaptcha(true);
-      }, 1000)
+    if (value) {
+      setValidateCaptcha(true);
+      // setTimeout(() => {
+      //   setValidateCaptcha(true);
+      // }, 1000)
     }
   }
 
@@ -69,30 +86,116 @@ const OTPPage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    if (otp.includes('')) {
-      setError('Please enter a valid OTP.');
+  // const handleSubmit = async () => {
+  //   if (otp.includes('')) {
+  //     setError('Please enter a valid OTP.');
+  //     return;
+  //   }
+
+  //   const enteredOtp = otp.join('');
+  //   if (enteredOtp === '123456') {
+  //     await handleVerifyOtp(enteredOtp, uhid);
+  //     const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
+  //     const browserId = generateBrowserId();
+  //     localStorage.setItem('browserId', browserId);
+  //     localStorage.setItem(
+  //       'otpVerification',
+  //       JSON.stringify({
+  //         verifiedUhid: uhid,
+  //         verifiedEpisodeNumber: episodeNumber,
+  //         expirationTime,
+  //         browserId
+  //       })
+  //     );
+
+  //     // navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
+  //     setTimeout(() => {
+  //       navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
+  //     }, 500)
+  //   } else {
+  //     setError('Invalid OTP. Please try again.');
+  //   }
+  // };
+
+
+  const handleSubmit = async () => {
+    const enteredOtp = otp.join('');
+  
+    // Only allow if enteredOtp is exactly 6 digits and numeric
+    if (!/^\d{6}$/.test(enteredOtp)) {
+      // setError('Please enter a valid 6-digit OTP.');
+      showToast('Please enter a valid 6-digit OTP.', 'error');
       return;
     }
-
-    const enteredOtp = otp.join('');
-    if (enteredOtp === '123456') {
-      const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
-      localStorage.setItem(
-        'otpVerification',
-        JSON.stringify({
-          verifiedPatientId: patientId,
-          verifiedEpisodeNumber: episodeNumber,
-          expirationTime,
-        })
-      );
-
-      navigate(`/stepper?patient_id=${patientId}&episode_number=${episodeNumber}`);
-    } else {
-      setError('Invalid OTP. Please try again.');
-    }
+  
+    setError(''); // Clear any previous error
+  
+    await handleVerifyOtp(enteredOtp, uhid);
+  
+    const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
+    const browserId = generateBrowserId();
+    localStorage.setItem('browserId', browserId);
+    localStorage.setItem(
+      'otpVerification',
+      JSON.stringify({
+        verifiedUhid: uhid,
+        verifiedEpisodeNumber: episodeNumber,
+        expirationTime,
+        browserId
+      })
+    );
+  
+    // Delay optional
+    setTimeout(() => {
+      navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
+    }, 500);
   };
+  
 
+  const handleOtp = () => {
+    setLoading(true);
+
+    let parmObj = {
+      uhid: uhid
+    }
+
+    let reqParm = {
+      _data: encryptData(parmObj)
+    }
+
+    SendOtp(reqParm).then(response => {
+      if (response?.status === 200) {
+        showToast(JSON.parse(decryptData(response?.data?._data))?.message, 'success');
+        setIsOtpSent(true);
+        setLoading(false);
+      }
+    }).catch(error => {
+      setIsOtpSent(false);
+      setLoading(false);
+    })
+  }
+
+  const handleVerifyOtp = (otpVal, uhid) => {
+    setLoading(true);
+    let parmObj = {
+      "uhid": uhid,
+      "otp": otpVal
+    }
+
+    let reqParm = {
+      _data: encryptData(parmObj)
+    }
+
+    VerifyOtp(reqParm).then(response => {
+      if (response?.status === 200) {
+        showToast(JSON.parse(decryptData(response?.data?._data))?.message, 'success');
+      }
+    }).catch(error => {
+      showToast('OTP verification failed', 'error');
+    }).finally(() => {
+      setLoading(false);
+    });
+  }
 
   return (
     <>
@@ -100,7 +203,7 @@ const OTPPage = () => {
       <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" onChange={handleVerify} />
       : */}
       <>
-        <Header/>
+        <Header />
         <div className="otp_page_container">
           <div className="left">
             <img src="./assets/otp_img.svg" alt="OTP" />
@@ -139,7 +242,7 @@ const OTPPage = () => {
                 Verify
               </button> */}
               <div className='submit_resend_cont'>
-                <Button handleSubmit={handleSubmit} btnVal={"Verify"} />
+                <Button handleSubmit={handleSubmit} btnVal={"Verify"} disabled={!isOtpSent} />
                 <div class="resend">
                   Didn’t Receive the OTP? <a href="#">Resend OTP</a>
                 </div>
@@ -152,6 +255,7 @@ const OTPPage = () => {
         </div>
       </>
       {/* } */}
+      {loading && <Loader />}
     </>
   );
 };

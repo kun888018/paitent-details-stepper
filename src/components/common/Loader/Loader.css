@@ -1,0 +1,19 @@
+.parentDisable {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000000CC !important;
+    opacity: 0.8;
+    z-index: 9999999;
+    height: 100%;
+    width: 100%;
+}
+
+#popup {
+    z-index: 9999999;
+    margin: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

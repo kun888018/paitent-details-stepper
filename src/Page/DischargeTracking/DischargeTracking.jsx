@@ -1,8 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./DischargeTracking.css";
-// import {expandArrow} from  './../../../public/assets/expand_arrow.svg';
+import { decryptData, encryptData } from "../../Utils/cryptoUtils";
+import { DischargeUserDetails } from "../../service/api.service";
+import { calculateAge, formatDOB } from "../../Utils/dateUtils";
 
 const DischargeTracking = () => {
+    let DischargeDetailsEncData = "U2FsdGVkX19ForvHG9kWAKDGbL+UNqOjSx5O+LZNIa5twtweC+mRMohEr35qlLqOJzUJh6+HrRph86lxhOd5DdkvjcInR9MWACCWOxB06vV7VhLnmZKRVUu6NVdwhphKJTQ6jITm2rWal+eeHZ2WKh6d6XGzxqGdCCgs+1otjJPlgma3qek1bN9Yq5fWkIoZkSPdP4DMan1404W3n5Z9JKRDH+HmZkwttu7JPoR114r6Lss2ir6gPOko/Z8K9h/B3yvAHcC5b812yX7mY0FwXKiskT5AheZ0nqdF8U3rJFjtjCeBCloRe6nVApalhF79w5IGnxF8EyXWRHBBI+Y2EcpTXzkJn+maZbCQgCMcRpudHsUuUNv5zpqpf5LJK0ETVqFnspw/WKCYxG5bN3rEs8mI1dqMlFMs5XwBZlyxa/sIPQmVg8JdpsnzRSUg2Dwbr2D3xpPtZuDraEei+0/sTT2ACVcDZXW5ejpCWwXJ6t2uhXOuqcA0Caf+gzpZJnaY2JlhViQ9VXd5JERCWdb0CP49ZzHUBQNA5PCuMIGBzxpVLCulVPmS9KEmTGPjeo6mPbcOVjBQHrkYDul806kZdGJmV2PauUQ4tszb/A9dD4j+KvAu6QTV2wm/DqpobR1JXff4lTvMjLTWLlQxVV86qpm8i9VPMa9i9Ap04QyOcwVHEj+goNSJrgHI7GvxGpxYXVSGdbaz4IAM+wzjGMjFpwqWydBZXTmvls+htWXvKiujtDv+vQ1UTFprYazlaqdw+BKftDbKNcq9DntFocbawwuo8x41exqs9g606LmxiK85h9T4LlD3ZEpsEiCFFiMLWVVRHtpvALyV8Ei0pxR3LKlJ79TyFhVxm+P1W7sGQ9JRuk8SXBc/reSxkdMIcesK6rnAX4++CQmQ7Qll2jMNwQxaED2ojuPaVIbwM9PtPkAnTz2YoY3USXtMupv2GmpaknC05LKa22OW+vDLhlSOaLj099JV26qMZRNTO7L67Qrd6AZ2UU9svszWZGo7hQCHTRwaftq7Mq1G4pTzPpWh5M7yc0Wc4NEASaN+IA1YMTMPxR4umUYZileMmm/RV71znq2jlSGlFd6bDUOapLoGkmt2nKdw3rm76qwsY4SMPvZMMoTmD/6dz0hSpEAdjJfq6Bd9jLYcuSwS7Y2stJ7ANTMMPrF4GZ2LxNUvYeILWjMPtccvbaZDapVMs9n/SgHA88C2VtiNZyw7hIMsIcoeAr/jFK+GNMdojbMZ/uatK2b4RZWybA9cjO75gtwEHVRUHyhzl9780ffsxcasqIm3KIq0FTqd4Czp47ZWXxeZ3u4BARa+l4bRavnNRBBMuT16J9RqCM70ATgiLWo3oODb77NuQq4NGIhCHn38CPjzdhgQkysdOkrJ4U6C2VqC3TThhQ083sDQgDfRqBl2WuH89JVwu/Qzub+yBHBVqdEtGHJmaejvKFD0nED9nzgTo7rwg1nkgh9uTPYeTR2AiUWc2A0RNCaAmw+SWjx8dF3AI7c=";
+    let parsVal = JSON.parse(decryptData(DischargeDetailsEncData));
+    console.log("parsVal=====>", parsVal)
 
     const steps = [
         {
@@ -39,55 +44,99 @@ const DischargeTracking = () => {
 
 
     const [expandedStep, setExpandedStep] = useState(null);
+    const [dischargeDetails, setDischargeDetails] = useState(parsVal?.data);
 
     const handleToggle = (index) => {
         setExpandedStep(expandedStep === index ? null : index);
     };
+
+    useEffect(() => {
+        handleDischargeUserDetails();
+    }, [])
+
+    const handleDischargeUserDetails = () => {
+        // setLoading(true);
+    
+        let parmObj = {
+            uhid: "MH016110626",
+            episode_number: "00011223435"
+        }
+    
+        let reqParm = {
+            // _data: encryptData(parmObj)
+            // data : parmObj 
+        }
+    
+        DischargeUserDetails(parmObj).then(response => {
+          console.log("response===>", response);
+            if (response?.status === 200) {
+              // console.log("response===>", response);
+            //   let parsVal = JSON.parse(decryptData(response?.data?._data));
+            //   setDischargeDetails(JSON.parse(parsVal?.data));
+            //   console.log("response===>1", JSON.parse(parsVal?.data));
+            } else if (response.data.statusCode === 400) {
+                // ToastErrorService(response.data.message);
+            }
+        }).catch(error => {
+            if (error?.response?.data?.statusCode === 401) {
+                // history.push('/')
+            }
+            // ToastErrorService(error?.response?.data.message);
+        }).finally(() => {
+            // setLoading(false);
+        })
+    }
+
+
     return (
         <div className="discharge-container">
             <div className="banner-section">
                 <div className="banner_bg_img">
-                    <div className="container banner-section-conatiner">
-                        <div className="for_mobile">
-                            <div className="back_btn_cont p20_lr_m">
-                                <img  className="pointer" src="assets/back_white_icon.svg" alt="" />
-                            </div>
-                            <div className="ward_payment_container p20_lr_m">
-                                <p>
-                                    <span>General</span> &nbsp;
-                                    <span>Ward</span>
-                                </p>
-                                <p>
-                                    <span>Insurance</span> &nbsp;
-                                    <span>Payment</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div className="patient-details-heading for_desktop ">
-                            <h2>Patient Details</h2>
-                        </div>
-                        <div className="patient-details-details p20_lr_m">
-                            <div className="patient-details-container">
-                                <p className="patient-name">Ms. Mohit Kumar Herimath</p>
-                                <div className="patient-details-patient">
-                                    <p><b>M/37</b> &nbsp; MR# 1HD173598131</p>
-                                    <p>Episode: <b>063978</b></p>
-                                    <p className="patient-details-dob">
-                                        DOB: 13/09/87 &nbsp; EDOD: 18/07/24
+                    {/* {dischargeDetails?.map((item, index) => ( */}
+                        <div className="container banner-section-conatiner">
+                            <div className="for_mobile">
+                                <div className="back_btn_cont p20_lr_m">
+                                    <img  className="pointer" src="assets/back_white_icon.svg" alt="" />
+                                </div>
+                                <div className="ward_payment_container p20_lr_m">
+                                    <p>
+                                        <span>{dischargeDetails?.ward_type}</span>&nbsp;
+                                        <span>Ward</span>
+                                    </p>
+                                    <p>
+                                        <span>{dischargeDetails?.payment_type}</span>&nbsp;
+                                        <span>Payment</span>
                                     </p>
                                 </div>
-                                <div className="patient-details-doctor">
-                                    <p><img src="assets/doctor_icon.svg" alt="" /> <span>Dr. Partha Sarathi Mitra</span></p>
-                                    <p><img src="assets/location_icon.svg" alt="" /> <span>Manipal Hospital Malleshwarama, Bengaluru</span></p>
-                                    <p className="patient-details-ward">Ward: General &nbsp; Payment: Insurance</p>
+                            </div>
+                            <div className="patient-details-heading for_desktop ">
+                                <h2>Patient Details</h2>
+                            </div>
+                            <div className="patient-details-details p20_lr_m">
+                                <div className="patient-details-container">
+                                    {dischargeDetails?.first_name &&
+                                    <p className="patient-name">{dischargeDetails?.gender === 'Male' ? 'Ms.' : 'Mrs.' } {""} {dischargeDetails?.first_name} {""} {dischargeDetails?.middle_name} {""} {dischargeDetails?.last_name}</p>
+                                    }
+                                    <div className="patient-details-patient">
+                                        <p><b>{dischargeDetails?.gender === 'Male' ? 'M' : 'F' }/ { calculateAge(dischargeDetails?.dob)}</b> &nbsp; MR# {dischargeDetails?.uhid_number}</p>
+                                        <p>Episode: <b>{dischargeDetails?.uhid_number}</b></p>
+                                        <p className="patient-details-dob">
+                                            DOA: {formatDOB(dischargeDetails?.date_of_addmission)} &nbsp; EDOD: {formatDOB(dischargeDetails?.date_of_discharge)}
+                                        </p>
+                                    </div>
+                                    <div className="patient-details-doctor">
+                                        <p><img src="/assets/doctor_icon.svg" alt="" /> <span>{dischargeDetails?.doctor?.name}</span></p>
+                                        <p><img src="/assets/location_icon.svg" alt="" /> <span>{dischargeDetails?.hospital?.name}</span></p>
+                                        <p className="patient-details-ward">Ward: {dischargeDetails?.ward_type} &nbsp; Payment: {dischargeDetails?.payment_type}</p>
+                                    </div>
+                                </div>
+                                <div className="room-info">
+                                    <p>Room No.</p>
+                                    <div className="room-number-box"> {dischargeDetails?.room_number}</div>
                                 </div>
                             </div>
-                            <div className="room-info">
-                                <p>Room No.</p>
-                                <div className="room-number-box">101</div>
-                            </div>
                         </div>
-                    </div>
+                    {/* ))} */}
                 </div>
             </div>
 

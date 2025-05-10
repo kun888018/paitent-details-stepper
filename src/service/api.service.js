@@ -16,3 +16,35 @@ export function SendOtp(reqParm) {
 //     };
 //     return axios.get(URL, headers);
 // }
+
+export function VerifyOtp(reqParm) {
+    const URL = API_CONFIG.VERIFY_OTP;
+    // const headers = {
+    //     'Content-Type': 'application/json'
+    // };
+    return axios.post(URL, reqParm);
+}
+
+export function DischargeUserDetails(reqParm) {
+    const URL = API_CONFIG.DISCHARGE_USER_DETAILS;
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+    return axios.get(URL, {params: reqParm}  );
+}
+
+
+// export function DischargeUserDetails(reqParm) {
+//     const URL = API_CONFIG.DISCHARGE_USER_DETAILS;
+//     return axios({
+//         method: 'get',
+//         url: URL,
+//         data: reqParm, // manually add body
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         transformRequest: [(data, headers) => JSON.stringify(data)],
+//     });
+// }
+
+

@@ -9,18 +9,18 @@ const StepperPage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const patientId = searchParams.get('patient_id');
+  const uhid = searchParams.get('uhid');
   const episodeNumber = searchParams.get('episode_number');
 
   useEffect(() => {
-    if (!patientId || !episodeNumber) {
+    if (!uhid || !episodeNumber) {
       setError('Invalid URL parameters.');
       return;
     }
 
     const expirationTime = JSON.parse(localStorage.getItem('otpVerification'))?.expirationTime;
     if (!expirationTime || Date.now() > expirationTime) {
-      navigate(`/?patient_id=${patientId}&episode_number=${episodeNumber}`);
+      navigate(`/?uhid=${uhid}&episode_number=${episodeNumber}`);
       return;
     }
 
@@ -40,7 +40,7 @@ const StepperPage = () => {
     };
 
     fetchSteps();
-  }, [patientId, episodeNumber, navigate]);
+  }, [uhid, episodeNumber, navigate]);
 
   if (error) {
     return <p style={{ color: 'red' }}>{error}</p>;
