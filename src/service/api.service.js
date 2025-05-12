@@ -27,11 +27,29 @@ export function VerifyOtp(reqParm) {
 
 export function DischargeUserDetails(reqParm) {
     const URL = API_CONFIG.DISCHARGE_USER_DETAILS;
-    const headers = {
-        'Content-Type': 'application/json'
-    };
-    return axios.get(URL, {params: reqParm}  );
+    // const headers = {
+    //     'Content-Type': 'application/json'
+    // };
+    return axios.post(URL, reqParm);
 }
+
+export function IpDepositPaymentDetails(reqParm) {
+    const URL = API_CONFIG.IP_DEPOSIT_PAYMENT;
+    // const headers = {
+    //     'Content-Type': 'application/json'
+    // };
+    return axios.post(URL, reqParm);
+}
+
+export function IpPaymentResponseDetails(reqParm) {
+    const URL = API_CONFIG.IP_PAYMENT_RESPONSE;
+    // const headers = {
+    //     'Content-Type': 'application/json'
+    // };
+    return axios.post(URL, reqParm);
+}
+
+
 
 
 // export function DischargeUserDetails(reqParm) {

@@ -86,72 +86,6 @@ const OTPPage = () => {
     }
   };
 
-  // const handleSubmit = async () => {
-  //   if (otp.includes('')) {
-  //     setError('Please enter a valid OTP.');
-  //     return;
-  //   }
-
-  //   const enteredOtp = otp.join('');
-  //   if (enteredOtp === '123456') {
-  //     await handleVerifyOtp(enteredOtp, uhid);
-  //     const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
-  //     const browserId = generateBrowserId();
-  //     localStorage.setItem('browserId', browserId);
-  //     localStorage.setItem(
-  //       'otpVerification',
-  //       JSON.stringify({
-  //         verifiedUhid: uhid,
-  //         verifiedEpisodeNumber: episodeNumber,
-  //         expirationTime,
-  //         browserId
-  //       })
-  //     );
-
-  //     // navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
-  //     setTimeout(() => {
-  //       navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
-  //     }, 500)
-  //   } else {
-  //     setError('Invalid OTP. Please try again.');
-  //   }
-  // };
-
-
-  const handleSubmit = async () => {
-    const enteredOtp = otp.join('');
-  
-    // Only allow if enteredOtp is exactly 6 digits and numeric
-    if (!/^\d{6}$/.test(enteredOtp)) {
-      // setError('Please enter a valid 6-digit OTP.');
-      showToast('Please enter a valid 6-digit OTP.', 'error');
-      return;
-    }
-  
-    setError(''); // Clear any previous error
-  
-    await handleVerifyOtp(enteredOtp, uhid);
-  
-    const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
-    const browserId = generateBrowserId();
-    localStorage.setItem('browserId', browserId);
-    localStorage.setItem(
-      'otpVerification',
-      JSON.stringify({
-        verifiedUhid: uhid,
-        verifiedEpisodeNumber: episodeNumber,
-        expirationTime,
-        browserId
-      })
-    );
-  
-    // Delay optional
-    setTimeout(() => {
-      navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
-    }, 500);
-  };
-  
-
   const handleOtp = () => {
     setLoading(true);
 
@@ -175,27 +109,85 @@ const OTPPage = () => {
     })
   }
 
-  const handleVerifyOtp = (otpVal, uhid) => {
+  const handleSubmit = async () => {
+    const enteredOtp = otp.join('');
+  
+    if (!/^\d{6}$/.test(enteredOtp)) {
+      showToast('Please enter a valid 6-digit OTP.', 'error');
+      return;
+    }
+  
+    setError('');
+  
+    const isVerified = await handleVerifyOtp(enteredOtp, uhid);
+  
+    if (!isVerified) {
+      return; // 🔐 Don't proceed if OTP verification failed
+    }
+  
+    const expirationTime = Date.now() + OTP_VALIDITY_PERIOD;
+    const browserId = generateBrowserId();
+  
+    localStorage.setItem('browserId', browserId);
+    localStorage.setItem(
+      'otpVerification',
+      JSON.stringify({
+        verifiedUhid: uhid,
+        verifiedEpisodeNumber: episodeNumber,
+        expirationTime,
+        browserId
+      })
+    );
+  
+    setTimeout(() => {
+      navigate(`/stepper/?uhid=${uhid}&episode_number=${episodeNumber}`);
+      setLoading(false);
+    }, 5000);
+  };
+  
+  const handleVerifyOtp = async (otpVal, uhid) => {
     setLoading(true);
-    let parmObj = {
-      "uhid": uhid,
-      "otp": otpVal
-    }
-
-    let reqParm = {
+  
+    const parmObj = {
+      uhid,
+      otp: otpVal
+    };
+  
+    const reqParm = {
       _data: encryptData(parmObj)
-    }
-
-    VerifyOtp(reqParm).then(response => {
+    };
+  
+    try {
+      const response = await VerifyOtp(reqParm);
       if (response?.status === 200) {
         showToast(JSON.parse(decryptData(response?.data?._data))?.message, 'success');
+        let getDataObj = JSON.parse(decryptData(response?.data?._data))
+        let getAccountData = JSON.parse(getDataObj?.data)
+        console.log("handleVerifyOtp=====>", getDataObj, getAccountData);
+        localStorage.setItem( 'userEmail', getAccountData[0]?.Email);
+        localStorage.setItem( 'MobileNo', getAccountData[0]?.MobileNo);
+        localStorage.setItem( 'PatientName', getAccountData[0]?.PatientName);
+        localStorage.setItem( 'prefillData', JSON.stringify({
+          name: getAccountData[0]?.PatientName,
+          email: getAccountData[0]?.Email,
+          contact: getAccountData[0]?.MobileNo,
+        }) )
+        return true;
+      } else {
+        showToast('OTP verification failed', 'error');
+        setLoading(false);
+        return false;
       }
-    }).catch(error => {
+    } catch (error) {
       showToast('OTP verification failed', 'error');
-    }).finally(() => {
       setLoading(false);
-    });
-  }
+      return false;
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
+  };
+  
 
   return (
     <>

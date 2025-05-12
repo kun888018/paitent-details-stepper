@@ -3,15 +3,11 @@ import './footer.css';
 import Button from '../common/Button';
 
 
-const Footer = () => {
-
-    const handleSubmit = () => {
-        console.log("=====>");
-    }
+const Footer = ({handleBtnFunction}) => {
 
     return (
         <footer class="app-Footer">
-            <Button handleSubmit={handleSubmit} btnVal={"Pay Now"} />
+            <Button handleSubmit={handleBtnFunction} btnVal={"Pay Now"}  />
             <p class="note_text">You can also choose to pay by cash at payment desk</p>
         </footer>
     );

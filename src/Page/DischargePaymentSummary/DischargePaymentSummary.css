@@ -1,0 +1,83 @@
+.receipt_container {
+    max-width: 800px;
+}
+
+.receipt_container{
+    padding-bottom: 120px;
+}
+
+.receipt_body{
+    background: #fff;
+    margin: 0 auto;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.receipt_body .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.receipt_body .logo {
+    height: 40px;
+}
+
+.receipt_body .headerRight {
+    text-align: right;
+    font-size: 14px;
+}
+
+.receipt_body .sectionTitle {
+    color: #0056a5;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #0056a5;
+    display: inline-block;
+}
+
+.receipt_body .successMessage {
+    color: #4caf50;
+    margin: 10px 0;
+}
+
+.receipt_body .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.receipt_body .tdBold {
+    padding: 10px 5px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    width: 40%;
+    font-size: 14px;
+}
+
+.receipt_body .td {
+    padding: 10px 5px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.receipt_body .footerMessage {
+    color: #4caf50;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+.receipt_body .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 13px;
+    color: #666;
+}
+
+.receipt_body .link {
+    color: #0056a5;
+    text-decoration: none;
+}

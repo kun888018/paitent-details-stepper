@@ -7,6 +7,7 @@ import OtpVerification from './Page/OtpVerification/OtpVerification';
 import PaymentReceipt from './Page/PaymentReceipt/PaymentReceipt';
 import PaymentSuccess from './Page/PaymentSuccess/PaymentSuccess';
 import { ToastContainer } from 'react-toastify';
+import DischargePaymentSummary from './Page/DischargePaymentSummary/DischargePaymentSummary';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           {/* <Route path="/" element={<StepperPage />} /> */}
           
           <Route path="/stepper" element={<StepperPage />} />
+          <Route path="/dischargePaymentSummary" element={<DischargePaymentSummary />} />
           <Route path="/404" element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
         </Routes>
